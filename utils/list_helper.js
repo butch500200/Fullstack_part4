@@ -1,3 +1,6 @@
+var _ = require('lodash')
+const blog = require('../models/blog')
+
 const dummy = (blogs) => {
   return 1
 }
@@ -25,8 +28,24 @@ const favoriteBlog = (blogs) => {
       }, formatBlog(blogs[0]))
 }
 
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) {
+    return {}
+  }
+  // i tried using lodash flow to do this but couldn't figure it out
+  // we count by author, break that objec into key value pais, then get the largest key value pair
+  const result = _.maxBy(_.entries(_.countBy(blogs, 'author')), _.last)
+  const highest = {
+    author: result[0],
+    blogs: result[1],
+  }
+
+  return highest
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 }
