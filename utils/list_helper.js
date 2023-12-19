@@ -43,9 +43,39 @@ const mostBlogs = (blogs) => {
   return highest
 }
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return {}
+  }
+
+  const authors = blogs.reduce((sum, current) => {
+    //if the authos has not been added, add it
+    if (sum[current.author] === undefined) {
+      sum[current.author] = {
+        author: current.author,
+        likes: 0,
+      }
+    }
+
+    sum[current.author].likes += current.likes
+    return sum
+  }, [])
+
+  const maxAuthor = Object.entries(authors).reduce((max, current) => {
+    return max.likes === undefined || max.likes < current[1].likes
+      ? current[1]
+      : max
+  }, {})
+
+  //console.log('maxAuthor', maxAuthor)
+
+  return maxAuthor
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }
