@@ -8,8 +8,13 @@ blogRouter.get('/', async (request, response) => {
 
 blogRouter.post('/', async (request, response) => {
   //console.log(request.body)
-
   const body = request.body
+  //if either body or url are missing from rewuest send back 400
+  if (!body.title || !body.url) {
+    response.status(400).send('missing information')
+    return
+  }
+
   const newBlog = {
     title: body.title,
     author: body.author,

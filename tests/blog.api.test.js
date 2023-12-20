@@ -64,6 +64,17 @@ test('adding blog with likes missing defualts to 0', async () => {
   expect(savedBlog.body.likes).toEqual(0)
 })
 
+test('adding invalid blog', async () => {
+  const newBlog = {
+    author: 'Emily Cassidy',
+    url: 'test url',
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
+
+  const blogsEnd = await Blog.find({})
+  expect(blogsEnd).toHaveLength(blogHelper.initialBlogs.length)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
